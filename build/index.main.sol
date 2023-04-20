@@ -683,6 +683,10 @@ contract Stdlib {
   }
 }
 
+struct T0 {
+  uint256 elem0;
+  uint256 elem1;
+  }
 contract ReachContract is Stdlib {
   uint256 current_step;
   uint256 current_time;
@@ -692,9 +696,42 @@ contract ReachContract is Stdlib {
   function _reachCreationTime() external view returns (uint256) { return creation_time; }
   function _reachCurrentTime() external view returns (uint256) { return current_time; }
   function _reachCurrentState() external view returns (uint256, bytes memory) { return (current_step, current_svbs); }
+  event _reach_e0(address _who, T0 _a);
+  event _reach_e1(address _who, T0 _a);
   receive () external payable {}
   fallback () external payable {}
   struct Memory {
     bool nil;
+    }
+  function _reachi_0(T0 memory _a, Memory memory _Memory) internal  {
+    reachRequire((! locked), uint256(7) /*'locked'*/);
+    emit _reach_e0(msg.sender, _a);
+    reachRequire((((_a.elem0) == uint256(0)) || (current_time == (_a.elem0))), uint256(8) /*'time check at ./index.rsh:22:9:dot'*/);
+    reachRequire((msg.value == uint256(0)), uint256(9) /*'(./index.rsh:22:9:dot,[],"verify network token pay amount")'*/);
+    bool nsvs;
+    current_step = uint256(1);
+    current_time = uint256(block.number);
+    current_svbs = abi.encode(nsvs);
+    }
+  function _reachi_1(T0 memory _a, Memory memory _Memory) internal  {
+    reachRequire((current_step == uint256(1)), uint256(10) /*'state check at ./index.rsh:28:7:dot'*/);
+    (bool _svs) = abi.decode(current_svbs, (bool));
+    reachRequire((! locked), uint256(11) /*'locked'*/);
+    emit _reach_e1(msg.sender, _a);
+    reachRequire((((_a.elem0) == uint256(0)) || (current_time == (_a.elem0))), uint256(12) /*'time check at ./index.rsh:28:7:dot'*/);
+    reachRequire((msg.value == uint256(0)), uint256(13) /*'(./index.rsh:28:7:dot,[],"verify network token pay amount")'*/);
+    current_step = 0x0;
+    current_time = 0x0;
+    delete current_svbs;
+    }
+  constructor(T0 memory v105) payable {
+    current_step = 0x0;
+    creation_time = uint256(block.number);
+    Memory memory _Memory;
+    _reachi_0(v105, _Memory);
+    }
+  function _reachp_1(T0 calldata v108) external payable returns (bool) {
+    Memory memory _Memory;
+    _reachi_1(v108, _Memory);
     }
   }
