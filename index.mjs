@@ -26,12 +26,22 @@ const Player = (Who) => ({
     console.log(`${Who} saw outcome ${OUTCOME[outcome]}`);
   },
 });
-// waits for backends to complete. Here we are initializing the backend for Alice and Bob
+// waits for backends to complete. Here we are initializing the backend for Alice and Bob. This is the interface object that is used to interact with the backend of each participant
 await Promise.all([
   ctcAlice.p.Alice({ // initializes backend for Alice
     ...Player('Alice'),
+    wager: stdlib.parseCurrency(5), // defines her wager as 5 unit network tokens. This is an example using concrete value, rather than a function, in a participant interact interface
   }),
   ctcBob.p.Bob({ // initializes backend for bob
     ...Player('Bob'),
+    acceptWager: (amt) => {
+      console.log(`Bob accepts wager of ${fmt(amt)}.`);
+    },
   }),
 ]);
+
+const afterAlice = await getBalance(accAlice); // gets the balance of Alice's account after the program/game is run
+const afterBob = await getBalance(accBob); // gets the balance of Bob's account after the program/game is run
+
+console.log(`Alice went from ${beforeAlice} to ${afterAlice}`);
+console.log(`Bob went from ${beforeBob} to ${afterBob}`);

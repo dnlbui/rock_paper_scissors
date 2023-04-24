@@ -11,37 +11,64 @@ store 1 // GV_currentStep :: UInt
 int 8
 extract_uint64
 store 2 // GV_currentTime :: UInt
-byte base64()
+byte base64(AA==)
+app_global_get
 preamble:
-pushbytess base64(Ulb9rA==) base64(yNBQsQ==)
+pushbytess base64(pHE8lg==) base64(yNBQsQ==)
 txna ApplicationArgs 0
 match _reachp_0 _reachp_1
 errl:
 err
 _reachi_0:
-load 11 // v104
+txn Sender
+store 16 // Alice/85
+load 11 // v154
 int 0
 extract_uint64
-store 12 // v103
-byte base64(rNEfww==)
-load 12 // v103
+store 12 // v153
+load 11 // v154
+int 8
+extract_uint64
+store 15 // wager/86
+load 11 // v154
+int 16
+extract_uint64
+store 14 // handAlice/87
+byte base64(93ETTQ==)
+load 12 // v153
 itob
 concat
-load 11 // v104
-extract 8 8
+load 15 // wager/86
+itob
 concat
-log // up to 20 bytes
-// ^ log: "_reach_e0" [v103,handAlice/60] "_reach_e0(uint64,uint64)"
-load 12 // v103
+load 14 // handAlice/87
+itob
+concat
+log // up to 28 bytes
+// ^ log: "_reach_e0" [v153,wager/86,handAlice/87] "_reach_e0(uint64,uint64,uint64)"
+load 12 // v153
 callsub l2_LF_timeCheck
-l3_LF_svsDump_1:
-byte base64()
+load 15 // wager/86
+callsub l3_LF_checkTxn_False
+// ^ CheckPay
+// at ./index.rsh:25:9:dot
+l4_LF_svsDump_1:
+load 16 // Alice/85
+load 15 // wager/86
+itob
+concat
+load 14 // handAlice/87
+itob
+concat
 int 1
 global Round
 updateStateNoOp:
 store 2 // GV_currentTime :: UInt
 store 1 // GV_currentStep :: UInt
-pop
+byte base64(AA==)
+swap
+extract 0 48
+app_global_put
 byte base64()
 load 1 // GV_currentStep :: UInt
 itob
@@ -54,7 +81,7 @@ int NoOp
 ==
 assert
 // checked on completion
-callsub l5_LF_updateMbr
+callsub l7_LF_updateMbr
 updateState:
 load 3 // GV_wasntMeth :: Bool
 bnz done
@@ -71,34 +98,88 @@ int 1
 load 1 // GV_currentStep :: UInt
 ==
 assert
-l4_LF_svsLoad_1:
-load 11 // v107
+l5_LF_svsLoad_1:
+dup
+extract 0 32
+store 16 // Alice/85
+dup
+int 32
+extract_uint64
+store 15 // wager/86
+int 40
+extract_uint64
+store 14 // handAlice/87
+load 11 // v157
 int 0
 extract_uint64
-store 12 // v106
+store 12 // v156
+load 11 // v157
+int 8
+extract_uint64
+store 13 // handBob/96
 byte base64(x7YK1Q==)
-load 12 // v106
+load 12 // v156
 itob
 concat
-load 11 // v107
-extract 8 8
+load 13 // handBob/96
+itob
 concat
 log // up to 20 bytes
-// ^ log: "_reach_e1" [v106,handBob/67] "_reach_e1(uint64,uint64)"
-load 12 // v106
+// ^ log: "_reach_e1" [v156,handBob/96] "_reach_e1(uint64,uint64)"
+load 12 // v156
 callsub l2_LF_timeCheck
+load 15 // wager/86
+callsub l3_LF_checkTxn_False
+// ^ CheckPay
+// at ./index.rsh:34:7:dot
+load 14 // handAlice/87
+int 4
+load 13 // handBob/96
+-
++
+int 3
+%
+store 11 // outcome/103
+byte base64(AAAAAAAAAAEAAAAAAAAAAQ==)
+byte base64(AAAAAAAAAAAAAAAAAAAAAg==)
+load 11 // outcome/103
+int 0
+==
+select
+byte base64(AAAAAAAAAAIAAAAAAAAAAA==)
+load 11 // outcome/103
+int 2
+==
+select
+dup
+store 12 // v110
+int 0
+extract_uint64
+load 15 // wager/86
+*
+// resource: R_Account
+load 16 // Alice/85
+callsub l6_LF_makeTxn_False_False_False_True
+load 12 // v110
+int 8
+extract_uint64
+load 15 // wager/86
+*
+// resource: R_Account
+txn Sender
+callsub l6_LF_makeTxn_False_False_False_True
 updateStateHalt:
 txn OnCompletion
 int DeleteApplication
 ==
 assert
 // checked on completion
-callsub l5_LF_updateMbr
+callsub l7_LF_updateMbr
 // resource: R_Account
 int 0
 global CurrentApplicationAddress
 global CreatorAddress
-callsub l6_LF_makeTxn_False_True_False_True
+callsub l8_LF_makeTxn_False_True_False_True
 b updateState
 _reachp_0:
 callsub l0_LF_wasntMeth
@@ -108,19 +189,19 @@ load 6 // GV_mbrAdd :: UInt
 +
 store 6 // GV_mbrAdd :: UInt
 txna ApplicationArgs 1
-store 11 // v104
+store 11 // v154
 b _reachi_0
 _reachp_1:
 callsub l0_LF_wasntMeth
 txna ApplicationArgs 1
-store 11 // v107
+store 11 // v157
 b _reachi_1
 alloc:
 int 0
 txn GlobalNumUint
 ==
 assert
-int 1
+int 2
 txn GlobalNumByteSlice
 ==
 assert
@@ -133,7 +214,8 @@ txn LocalNumByteSlice
 ==
 assert
 callsub l0_LF_wasntMeth
-byte base64()
+int 48
+bzero
 int 0
 int 0
 b updateStateNoOp
@@ -144,7 +226,7 @@ int NoOp
 assert
 // checked on completion
 b apiReturn_noCheck
-l7_LF_makeTxnK_False_True:
+l9_LF_makeTxnK_False_True:
 int 0
 itxn_field Fee
 int pay
@@ -162,7 +244,7 @@ swap
 dup
 store 6 // GV_mbrAdd :: UInt
 global CreatorAddress
-callsub l9_LF_makeTxn_False_False_False_True
+callsub l6_LF_makeTxn_False_False_False_True
 retsub
 updateMbr_pos_eq:
 -
@@ -170,7 +252,12 @@ dup
 bz updateMbr_eq
 dup
 store 6 // GV_mbrAdd :: UInt
-l8_LF_checkTxn_False:
+callsub l3_LF_checkTxn_False
+retsub
+l6_LF_makeTxn_False_False_False_True:
+itxn_begin
+b l9_LF_makeTxnK_False_True
+l3_LF_checkTxn_False:
 // resource: R_Txn
 txn GroupIndex
 load 0 // GV_txnCounter :: UInt
@@ -196,7 +283,7 @@ l0_LF_wasntMeth:
 int 1
 store 3 // GV_wasntMeth :: Bool
 retsub
-l5_LF_updateMbr:
+l7_LF_updateMbr:
 load 6 // GV_mbrAdd :: UInt
 load 7 // GV_mbrSub :: UInt
 dup2
@@ -213,10 +300,7 @@ load 2 // GV_currentTime :: UInt
 ||
 assert
 retsub
-l9_LF_makeTxn_False_False_False_True:
-itxn_begin
-b l7_LF_makeTxnK_False_True
-l6_LF_makeTxn_False_True_False_True:
+l8_LF_makeTxn_False_True_False_True:
 itxn_begin
 itxn_field CloseRemainderTo
-b l7_LF_makeTxnK_False_True
+b l9_LF_makeTxnK_False_True
